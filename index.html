@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Happy Birthday Ila ♡</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -22,8 +22,8 @@ body {
   color: #b30059;
 }
 
-/* loading */
-.loading-screen {
+/* LOADING */
+.loading {
   position: fixed;
   inset: 0;
   background: linear-gradient(135deg,#ffcce6,#d9f0ff,#e5d4ff);
@@ -35,99 +35,69 @@ body {
   transition: opacity 1s ease;
 }
 
-.loading-screen.hidden {
+.loading.hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-/* layout */
-.container {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-  position: relative;
-  z-index: 2;
-}
-
-.card {
-  max-width: 850px;
-  width: 100%;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(20px);
-  border-radius: 35px;
+/* PAGES */
+.page {
+  display: none;
+  min-height: 100vh;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  animation: fade 0.8s ease;
 }
 
-/* memories */
-.memory {
-  display: none;
-  margin-top: 20px;
-}
-
-.memory.active {
+.page.active {
   display: block;
 }
 
+@keyframes fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CARD */
+.card {
+  max-width: 800px;
+  margin: auto;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 40px;
+}
+
+/* BUTTON */
 button {
-  margin-top: 15px;
+  margin-top: 20px;
   padding: 12px 25px;
   border-radius: 999px;
   border: none;
-  cursor: pointer;
   background: white;
   color: #b30059;
   font-weight: bold;
+  cursor: pointer;
 }
 
-/* polaroid */
+/* POLAROID */
 .polaroid {
   background: white;
-  padding: 15px 15px 60px;
-  border-radius: 12px;
-  width: 280px;
+  padding: 15px 15px 50px;
+  width: 260px;
   margin: 20px auto;
+  border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  position: relative;
 }
 
 .polaroid img {
   width: 100%;
-  height: 260px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.polaroid span {
-  position: absolute;
-  bottom: 15px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #b30059;
-}
-
-/* popup */
-.popup {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.3);
-  z-index: 9999;
-}
-
-.popup-content {
-  background: white;
-  padding: 25px;
-  border-radius: 20px;
-  max-width: 400px;
-  color: #b30059;
-}
-
-/* hearts */
+/* HEARTS */
 .heart {
   position: absolute;
   animation: float 8s linear infinite;
@@ -138,104 +108,114 @@ button {
   from { transform: translateY(100vh); }
   to { transform: translateY(-10vh); }
 }
+
+/* MUSIC */
+.music {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+}
 </style>
 </head>
 
 <body>
 
 <!-- LOADING -->
-<div class="loading-screen" id="loadingScreen">
-  Loading memories for Ila...
+<div class="loading" id="loading">
+  <h2>Loading memories for Ila ♡</h2>
 </div>
 
 <!-- HEARTS -->
 <div id="hearts"></div>
 
-<div class="container">
+<!-- MUSIC -->
+<div class="music" onclick="toggleMusic()">♫</div>
+<audio id="music" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
   <div class="card">
-
     <h1>Happy Birthday Ila ♡</h1>
-
-    <button onclick="showMemory(1)">Start</button>
-
-    <div class="memory" id="memory1">
-      <div class="polaroid">
-        <img src="ila1.jpg">
-        <span>our memories</span>
-      </div>
-      <p>happy birthday my love ♡</p>
-      <button onclick="showMemory(2)">Next</button>
-    </div>
-
-    <div class="memory" id="memory2">
-      <div class="polaroid">
-        <img src="ila5.jpg">
-        <span>you are loved</span>
-      </div>
-      <p>you mean so much to me</p>
-      <button onclick="showMemory(3)">Next</button>
-    </div>
-
-    <div class="memory" id="memory3">
-      <div class="polaroid">
-        <img src="ila7.jpg">
-        <span>forever</span>
-      </div>
-      <p>thank you for existing</p>
-    </div>
-
+    <p>a little universe made for you</p>
+    <button onclick="goPage(2)">enter →</button>
   </div>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <p id="popupText"></p>
-    <button onclick="closePopup()">close</button>
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="card">
+
+    <h2>our memories</h2>
+
+    <div class="polaroid">
+      <img src="ila1.jpg">
+    </div>
+
+    <p>you mean so much to me</p>
+
+    <button onclick="goPage(3)">next page →</button>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div class="card">
+
+    <h2>final letter</h2>
+
+    <p>
+      happy birthday my love ♡<br><br>
+      thank you for existing.<br>
+      thank you for being my safe place.<br>
+      thank you for everything.
+    </p>
+
   </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  // loading fix
   setTimeout(() => {
-    document.getElementById("loadingScreen").classList.add("hidden");
-  }, 2500);
+    document.getElementById("loading").classList.add("hidden");
+  }, 2000);
 
-  // hearts safe
-  const container = document.getElementById("hearts");
+  // hearts
+  const h = document.getElementById("hearts");
 
-  for (let i = 0; i < 18; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = "♡";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.fontSize = (10 + Math.random() * 20) + "px";
-    h.style.animationDuration = (5 + Math.random() * 5) + "s";
-
-    container.appendChild(h);
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "♡";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+    h.appendChild(heart);
   }
+
 });
 
-// memory system (FIXED)
-function showMemory(num) {
-  document.querySelectorAll(".memory").forEach(m => {
-    m.classList.remove("active");
-  });
-
-  const el = document.getElementById("memory" + num);
-  if (el) el.classList.add("active");
+// PAGE SWITCH
+function goPage(num) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page" + num).classList.add("active");
 }
 
-// popup
-function openPopup(text) {
-  document.getElementById("popupText").innerText = text;
-  document.getElementById("popup").style.display = "flex";
-}
-
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
+// MUSIC
+function toggleMusic() {
+  const m = document.getElementById("music");
+  if (m.paused) m.play();
+  else m.pause();
 }
 </script>
 
