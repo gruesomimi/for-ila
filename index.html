@@ -19,12 +19,23 @@
 body {
   font-family: 'Fredoka', sans-serif;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #ffd6ec, #d9f0ff, #e6d8ff);
   min-height: 100vh;
-  color: white;
+  background: linear-gradient(135deg, #ffd6ec, #d9f0ff, #e6d8ff);
+  color: #b30059; /* 💗 DARK PINK TEXT */
 }
 
-/* loading */
+/* background glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.6), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(255,255,255,0.4), transparent 35%);
+  z-index: -1;
+}
+
+/* loading screen */
 .loading-screen {
   position: fixed;
   inset: 0;
@@ -35,6 +46,8 @@ body {
   flex-direction: column;
   z-index: 99999;
   transition: opacity 1s ease;
+  color: #b30059;
+  font-weight: bold;
 }
 
 .loading-screen.hidden {
@@ -47,12 +60,13 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
 .heart {
   position: absolute;
+  color: rgba(179,0,89,0.4);
   animation: float 8s linear infinite;
-  opacity: 0.6;
 }
 
 @keyframes float {
@@ -72,16 +86,38 @@ body {
 .card {
   max-width: 850px;
   width: 100%;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(20px);
-  border-radius: 30px;
+  border-radius: 35px;
   padding: 40px;
   text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* memories */
-.memory { display: none; }
-.memory.active { display: block; }
+.subtitle {
+  letter-spacing: 4px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.title {
+  font-size: 60px;
+  font-weight: 700;
+  color: #c2185b;
+}
+
+.name {
+  font-size: 35px;
+  margin-top: 10px;
+}
+
+.intro {
+  margin-top: 25px;
+  padding: 25px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 25px;
+}
 
 button {
   margin-top: 20px;
@@ -89,8 +125,70 @@ button {
   border-radius: 999px;
   border: none;
   cursor: pointer;
+  background: white;
+  color: #b30059;
+  font-weight: bold;
 }
 
+/* memories */
+.memory {
+  display: none;
+  margin-top: 20px;
+}
+
+.memory.active {
+  display: block;
+}
+
+.polaroid {
+  background: white;
+  padding: 15px 15px 60px;
+  border-radius: 12px;
+  width: 280px;
+  margin: 20px auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.polaroid img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.polaroid span {
+  display: block;
+  margin-top: 10px;
+  color: #b30059;
+}
+
+/* chat */
+.chat-box {
+  margin-top: 30px;
+  text-align: left;
+  background: rgba(255,255,255,0.25);
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.chat-msg {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 15px;
+  width: fit-content;
+  max-width: 80%;
+}
+
+.me {
+  background: rgba(255,255,255,0.4);
+}
+
+.her {
+  background: rgba(255,182,193,0.4);
+  margin-left: auto;
+}
+
+/* popup */
 .popup {
   position: fixed;
   inset: 0;
@@ -98,29 +196,28 @@ button {
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,0.3);
+  z-index: 9999;
 }
 
 .popup-content {
   background: white;
-  padding: 30px;
+  padding: 25px;
   border-radius: 20px;
-  color: black;
+  color: #b30059;
   max-width: 400px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
 <div class="loading-screen" id="loadingScreen">
-  <h2>Loading memories...</h2>
+  Loading memories for Ila...
 </div>
 
-<!-- HEARTS -->
 <div class="floating-hearts"></div>
 
-<!-- MUSIC -->
 <audio id="bgMusic" loop>
   <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -128,67 +225,85 @@ button {
 <div class="container">
   <div class="card">
 
-    <h1>Happy Birthday Ila ♡</h1>
+    <div class="subtitle">FOR MY FAVORITE PERSON</div>
+    <div class="title">Happy Birthday</div>
+    <div class="name">Ila ♡</div>
 
-    <button onclick="showMemory(1)">Start</button>
+    <div class="intro">
+      <p>a little universe made just for you</p>
+      <button onclick="showMemory(1)">continue ♡</button>
+    </div>
 
     <div class="memory" id="memory1">
-      <p>happy birthday my love ♡</p>
+      <div class="polaroid">
+        <img src="ila1.jpg">
+        <span>our memories ♡</span>
+      </div>
+      <p>happy birthday my love</p>
       <button onclick="showMemory(2)">next</button>
     </div>
 
     <div class="memory" id="memory2">
-      <p>you mean a lot to me</p>
+      <div class="polaroid">
+        <img src="ila5.jpg">
+        <span>you are loved ♡</span>
+      </div>
+      <p>you mean so much to me</p>
       <button onclick="showMemory(3)">next</button>
     </div>
 
     <div class="memory" id="memory3">
-      <p>forever grateful for you</p>
-    </div>
-
-    <div class="popup" id="popup">
-      <div class="popup-content">
-        <p id="popupText"></p>
-        <button onclick="closePopup()">close</button>
+      <div class="polaroid">
+        <img src="ila7.jpg">
+        <span>forever ♡</span>
       </div>
+      <p>thank you for existing</p>
     </div>
 
+    <div class="chat-box">
+      <div class="chat-msg me">remember this?</div>
+      <div class="chat-msg her">i miss you already</div>
+      <div class="chat-msg me">you're my favourite person</div>
+      <div class="chat-msg her">♡</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">close</button>
   </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  // remove loading screen safely
   setTimeout(() => {
-    const load = document.getElementById("loadingScreen");
-    if (load) load.classList.add("hidden");
+    document.getElementById("loadingScreen")?.classList.add("hidden");
   }, 2500);
 
-  // floating hearts safely
-  const heartContainer = document.querySelector(".floating-hearts");
-  if (heartContainer) {
-    for (let i = 0; i < 15; i++) {
+  const container = document.querySelector(".floating-hearts");
+
+  if (container) {
+    for (let i = 0; i < 20; i++) {
       const h = document.createElement("div");
       h.classList.add("heart");
       h.innerHTML = "♡";
       h.style.left = Math.random() * 100 + "vw";
-      h.style.fontSize = (10 + Math.random() * 20) + "px";
       h.style.animationDuration = (5 + Math.random() * 5) + "s";
-      heartContainer.appendChild(h);
+      container.appendChild(h);
     }
   }
 
 });
 
-// memory switching
 function showMemory(num) {
   document.querySelectorAll(".memory").forEach(m => m.classList.remove("active"));
-  const el = document.getElementById("memory" + num);
-  if (el) el.classList.add("active");
+  document.getElementById("memory" + num)?.classList.add("active");
 }
 
-// popup
 function openPopup(text) {
   document.getElementById("popupText").innerText = text;
   document.getElementById("popup").style.display = "flex";
