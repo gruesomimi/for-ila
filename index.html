@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Happy Birthday Ila ♡</title>
+<title>Happy Birthday My Love Ila ♡</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -30,9 +30,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   z-index: 9999;
   transition: opacity 1s ease;
+  flex-direction: column;
 }
 
 .loading.hidden {
@@ -80,6 +80,15 @@ button {
   cursor: pointer;
 }
 
+/* SLIDESHOW */
+.slide {
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
 /* POLAROID */
 .polaroid {
   background: white;
@@ -95,6 +104,46 @@ button {
   height: 250px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+/* ENVELOPES */
+.envelope {
+  background: rgba(255,255,255,0.4);
+  padding: 20px;
+  border-radius: 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* POPUP */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+}
+
+.popup-content {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 400px;
+  color: #b30059;
+}
+
+/* TYPEWRITER */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #b30059;
+  white-space: nowrap;
+  animation: typing 4s steps(40) forwards;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
 }
 
 /* HEARTS */
@@ -115,14 +164,13 @@ button {
   bottom: 20px;
   right: 20px;
   background: white;
-  border-radius: 50%;
   width: 60px;
   height: 60px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 999;
 }
 </style>
 </head>
@@ -131,7 +179,7 @@ button {
 
 <!-- LOADING -->
 <div class="loading" id="loading">
-  <h2>Loading memories for Ila ♡</h2>
+  <h2>loading your universe ♡</h2>
 </div>
 
 <!-- HEARTS -->
@@ -147,24 +195,41 @@ button {
 <div class="page active" id="page1">
   <div class="card">
     <h1>Happy Birthday Ila ♡</h1>
-    <p>a little universe made for you</p>
+    <p class="typewriter">a little universe made just for you</p>
     <button onclick="goPage(2)">enter →</button>
   </div>
 </div>
 
-<!-- PAGE 2 -->
+<!-- PAGE 2 (SLIDESHOW) -->
 <div class="page" id="page2">
   <div class="card">
 
-    <h2>our memories</h2>
+    <h2>beautiful baby</h2>
 
-    <div class="polaroid">
-      <img src="ila1.jpg">
+    <div class="slide active">
+      <div class="polaroid">
+        <img src="ila1.jpg">
+      </div>
+      <p>you are my safe place</p>
     </div>
 
-    <p>you mean so much to me</p>
+    <div class="slide">
+      <div class="polaroid">
+        <img src="ila5.jpg">
+      </div>
+      <p>you make life softer</p>
+    </div>
 
-    <button onclick="goPage(3)">next page →</button>
+    <div class="slide">
+      <div class="polaroid">
+        <img src="ila7.jpg">
+      </div>
+      <p>forever grateful for you</p>
+    </div>
+
+    <button onclick="nextSlide()">next memory →</button>
+    <button onclick="goPage(3)">final page →</button>
+
   </div>
 </div>
 
@@ -172,15 +237,20 @@ button {
 <div class="page" id="page3">
   <div class="card">
 
-    <h2>final letter</h2>
+    <h2>open when… 💌</h2>
 
-    <p>
-      happy birthday my love ♡<br><br>
-      thank you for existing.<br>
-      thank you for being my safe place.<br>
-      thank you for everything.
-    </p>
+    <div class="envelope" onclick="openLetter('sad')">open when sad</div>
+    <div class="envelope" onclick="openLetter('miss')">open when you miss me</div>
+    <div class="envelope" onclick="openLetter('happy')">open when happy</div>
 
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">close</button>
   </div>
 </div>
 
@@ -191,10 +261,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loading").classList.add("hidden");
   }, 2000);
 
-  // hearts
   const h = document.getElementById("hearts");
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 25; i++) {
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.innerHTML = "♡";
@@ -211,7 +280,35 @@ function goPage(num) {
   document.getElementById("page" + num).classList.add("active");
 }
 
-// MUSIC
+/* SLIDESHOW */
+let slideIndex = 0;
+function nextSlide() {
+  const slides = document.querySelectorAll(".slide");
+  slides[slideIndex].classList.remove("active");
+
+  slideIndex = (slideIndex + 1) % slides.length;
+
+  slides[slideIndex].classList.add("active");
+}
+
+/* ENVELOPES */
+function openLetter(type) {
+
+  const messages = {
+    sad: "hi biebie sayang, you're never alone. i'm always here with you ♡",
+    miss: "if you miss me, i'm already missing you more.",
+    happy: "i love seeing you happy. please stay like this forever."
+  };
+
+  document.getElementById("popupText").innerText = messages[type];
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+/* MUSIC */
 function toggleMusic() {
   const m = document.getElementById("music");
   if (m.paused) m.play();
